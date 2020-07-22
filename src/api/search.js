@@ -4,7 +4,7 @@ let autocompleteData = null
 let autocompleteDataLoaded = false
 
 const elasticRequest = (body, callback, error) => {
-  const apiUrl = "/search-api"
+  const apiUrl = "https://es.admin.fortepan.hu"
   const searchHost = `${apiUrl}/elasticsearch_index_fortepan_media/_search`
 
   // Perform the request
@@ -182,19 +182,21 @@ const getDonors = (callback, error) => {
   elasticRequest(body, callback, error)
 }
 
-const autoSuggest = (prefix, callback, error) => {
+const autoSuggest = (prefix, filter = false, callback, error) => {
   const filterAutoCompleteData = () => {
     if (!autocompleteData) error()
     else {
       const res = []
       Object.keys(autocompleteData).forEach(key => {
-        const items = autocompleteData[key].filter(keyword => {
-          if (slugify(keyword).indexOf(slugify(prefix)) === 0) return true
-          return false
-        })
-        items.forEach(item => {
-          res.push(item)
-        })
+        if (!filter || filter === key) {
+          const items = autocompleteData[key].filter(keyword => {
+            if (slugify(keyword).indexOf(slugify(prefix)) === 0) return true
+            return false
+          })
+          items.forEach(item => {
+            res.push(item)
+          })
+        }
       })
 
       const resSorted = res.sort((a, b) => {
