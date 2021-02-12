@@ -183,7 +183,7 @@ export default class extends Controller {
         // show carousel with an image
         if (document.querySelector(".photos-thumbnail")) document.querySelector(".photos-thumbnail").click()
       } else {
-        trigger("photosCarousel:hide")
+        trigger("carousel:hide")
       }
     })
 
@@ -199,14 +199,14 @@ export default class extends Controller {
   showNextPhotoInCarousel() {
     let next = this.selectedThumbnail.nextElementSibling
     if (next) {
-      trigger("photosCarousel:hidePhotos")
+      trigger("carousel:hidePhotos")
       next.click()
     } else if (this.thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0 && this.thumbnailsCount > 0) {
       this.thumbnailsLoading = true
       this.loadPhotos().then(() => {
         next = this.selectedThumbnail.nextElementSibling
         if (next) {
-          trigger("photosCarousel:hidePhotos")
+          trigger("carousel:hidePhotos")
           next.click()
         }
       })
@@ -217,7 +217,7 @@ export default class extends Controller {
   showPrevPhotoInCarousel() {
     const prev = this.selectedThumbnail.previousElementSibling
     if (prev) {
-      trigger("photosCarousel:hidePhotos")
+      trigger("carousel:hidePhotos")
       prev.click()
     }
   }

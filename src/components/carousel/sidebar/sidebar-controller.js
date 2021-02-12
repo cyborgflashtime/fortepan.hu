@@ -1,8 +1,8 @@
 import { Controller } from "stimulus"
 
 import throttle from "lodash/throttle"
-import { trigger } from "../../../../js/utils"
-import { setAppState, removeAppState, toggleAppState, appState } from "../../../../js/app"
+import { trigger } from "../../../js/utils"
+import { setAppState, removeAppState, toggleAppState, appState } from "../../../js/app"
 
 export default class extends Controller {
   static get targets() {
@@ -73,7 +73,7 @@ export default class extends Controller {
     this.element.querySelectorAll(".carousel-sidebar a:not([class])").forEach(anchorNode => {
       anchorNode.addEventListener("click", event => {
         event.preventDefault()
-        trigger("photosCarousel:hide")
+        trigger("carousel:hide")
         trigger("photos:historyPushState", { url: event.currentTarget.href, resetPhotosGrid: true })
       })
     })

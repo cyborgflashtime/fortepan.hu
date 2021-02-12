@@ -1,8 +1,8 @@
 import { Controller } from "stimulus"
 
-import config from "../../../data/siteConfig"
-import { trigger, getURLParams, isTouchDevice } from "../../../js/utils"
-import { selectedThumbnail, removeAppState, appState } from "../../../js/app"
+import config from "../../data/siteConfig"
+import { trigger, getURLParams, isTouchDevice } from "../../js/utils"
+import { selectedThumbnail, removeAppState, appState } from "../../js/app"
 
 export default class extends Controller {
   static get targets() {
@@ -70,7 +70,7 @@ export default class extends Controller {
     if (!photo) {
       photo = document.createElement("div")
       photo.dataset.controller = "image-loader"
-      photo.setAttribute("data-photos--carousel-target", "photo")
+      photo.setAttribute("data-carousel-target", "photo")
       photo.className = "image-loader"
       photo.id = `Fortepan-${id}`
 
@@ -109,7 +109,7 @@ export default class extends Controller {
     trigger("carouselSidebar:init")
     trigger("dialogDownload:init")
     trigger("dialogShare:init")
-    trigger("photosCarousel:show")
+    trigger("carousel:show")
   }
 
   showNextPhoto() {
@@ -134,15 +134,15 @@ export default class extends Controller {
   }
 
   get slideshowIsPlaying() {
-    appState("play-carousel-slideshow")
+    return appState("play-carousel-slideshow")
   }
 
   get sidebarIsHidden() {
-    appState("hide-carousel-sidebar")
+    return appState("hide-carousel-sidebar")
   }
 
   playSlideshow() {
-    addAppState("play-carousel-slideshow")
+    appState("play-carousel-slideshow")
 
     // store sidebar visibility
     trigger("carouselSidebar:hide")
@@ -197,7 +197,7 @@ export default class extends Controller {
 
     switch (e.key) {
       case "Escape":
-        trigger("photosCarousel:hide")
+        trigger("carousel:hide")
         break
       case " ":
         this.toggleSlideshow()
@@ -210,6 +210,10 @@ export default class extends Controller {
         break
       default:
     }
+  }
+
+  bookmarkPhoto() {
+    trigger("dialogBookmark:show")
   }
 
   downloadImage() {

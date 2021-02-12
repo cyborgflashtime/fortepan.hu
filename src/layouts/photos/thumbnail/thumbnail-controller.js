@@ -27,7 +27,7 @@ export default class extends Controller {
     trigger("photos:selectThumbnail", { node: this.element })
 
     // Load photo in Carousel
-    trigger("photosCarousel:showPhoto")
+    trigger("carousel:showPhoto")
 
     // set html page meta for social sharing
     setPageMeta(

@@ -236,6 +236,34 @@ const getTotal = () => {
   })
 }
 
+// get a random record from Elastic
+const getRandom = () => {
+  return new Promise((resolve, reject) => {
+    const body = {
+      size: 1,
+      query: {
+        function_score: {
+          functions: [
+            {
+              random_score: {
+                seed: Math.round(Math.random() * 100000000).toString(),
+              },
+            },
+          ],
+        },
+      },
+    }
+
+    elasticRequest(body)
+      .then(resp => {
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
 // get an aggregated list of all donators
 const getDonators = () => {
   return new Promise((resolve, reject) => {
@@ -266,4 +294,5 @@ export default {
   search,
   getTotal,
   getDonators,
+  getRandom,
 }
