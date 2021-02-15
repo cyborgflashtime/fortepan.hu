@@ -236,13 +236,29 @@ const getTotal = () => {
   })
 }
 
-// get a random record from Elastic
-const getRandom = () => {
+// get a random records from Elastic
+const getRandom = (size = 1) => {
   return new Promise((resolve, reject) => {
     const body = {
-      size: 1,
+      size,
       query: {
         function_score: {
+          query: {
+            bool: {
+              must: [
+                {
+                  match_all: {},
+                },
+                {
+                  range: {
+                    year: {
+                      gt: 0,
+                    },
+                  },
+                },
+              ],
+            },
+          },
           functions: [
             {
               random_score: {
@@ -290,9 +306,30 @@ const getDonators = () => {
   })
 }
 
+const getDataByMediaId = array => {
+  return new Promise((resolve, reject) => {
+    const body = {
+      query: {
+        ids: {
+          values: array.map(item => `"entity:media/${item}:hu"`),
+        },
+      },
+    }
+
+    elasticRequest(body)
+      .then(resp => {
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
 export default {
   search,
   getTotal,
   getDonators,
   getRandom,
+  getDataByMediaId,
 }
